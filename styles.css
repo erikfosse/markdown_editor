@@ -2,6 +2,34 @@ QMainWindow {
     background: #0b1220;
 }
 
+#TitleBar {
+    background: #111827;
+    border-bottom: 1px solid #243247;
+}
+
+#TitleBarTitle {
+    color: #e5e7eb;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#TitleBar QPushButton {
+    background: transparent;
+    color: #e5e7eb;
+    border: none;
+    border-radius: 6px;
+    padding: 2px 0px;
+    font-size: 18px;
+}
+
+#TitleBar QPushButton:hover {
+    background: #1f2937;
+}
+
+#TitleBar QPushButton:pressed {
+    background: #334155;
+}
+
 QToolBar {
     background: #111827;
     border: none;

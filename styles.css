@@ -1,0 +1,61 @@
+QMainWindow {
+    background: #0b1220;
+}
+
+QToolBar {
+    background: #111827;
+    border: none;
+    spacing: 6px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #243247;
+}
+
+QToolButton {
+    background: transparent;
+    color: #e5e7eb;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+QToolButton:hover {
+    background: #1f2937;
+}
+
+QPlainTextEdit {
+    background: #0f172a;
+    color: #e5e7eb;
+    border: 1px solid #334155;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    padding: 10px;
+}
+
+QTextBrowser {
+    background: #111827;
+    color: #e5e7eb;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 20px 24px;
+}
+
+QSplitter::handle {
+    background: #243247;
+    margin-left: 3px;
+    margin-right: 3px;
+    border-radius: 4px;
+}
+
+QSplitter::handle:hover {
+    background: #334155;
+}
+
+QSplitter::handle:horizontal {
+    width: 12px;
+}
+
+QSplitter::handle:vertical {
+    height: 12px;
+}

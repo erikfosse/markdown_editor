@@ -281,6 +281,13 @@ class TitleBar(QFrame):
         self.title_label.setText(title)
 
     def minimize_window(self):
+        if self.window.isMinimized():
+            self.window.setWindowState(self.window.windowState() & ~Qt.WindowMinimized)
+            self.window.showNormal()
+            self.window.raise_()
+            self.window.activateWindow()
+            return
+
         self.window.setWindowState(self.window.windowState() | Qt.WindowMinimized)
         self.window.showMinimized()
 

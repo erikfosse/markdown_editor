@@ -1,4 +1,5 @@
 import html
+import re
 import subprocess
 from pathlib import Path
 import sys
@@ -29,6 +30,16 @@ try:
 except ImportError:
     md = None
 
+try:
+    from pygments import highlight
+    from pygments.formatters import HtmlFormatter
+    from pygments.lexers import get_lexer_by_name, guess_lexer
+except ImportError:
+    highlight = None
+    HtmlFormatter = None
+    get_lexer_by_name = None
+    guess_lexer = None
+
 
 DEFAULT_TEXT = """# Markdown Editor
 
@@ -49,16 +60,45 @@ BASE_DIR = Path(__file__).resolve().parent
 DOCUMENTS_DIR = BASE_DIR / "documents"
 STYLESHEET_FILE = BASE_DIR / "styles.css"
 
+CODE_BLOCK_RE = re.compile(
+    r'<pre><code(?: class="language-(?P<lang>[^"]+)")?>(?P<code>.*?)</code></pre>',
+    re.DOTALL,
+)
+
 
 def render_markdown(text: str) -> str:
     if md is not None:
-        return md.markdown(
+        rendered = md.markdown(
             text,
             extensions=["fenced_code", "tables", "nl2br", "codehilite"],
         )
+        return render_code_blocks(rendered)
 
     escaped = html.escape(text).replace("\n", "<br>")
     return f"<pre>{escaped}</pre>"
+
+
+def render_code_blocks(rendered_html: str) -> str:
+    if highlight is None or HtmlFormatter is None:
+        return rendered_html
+
+    def replace(match):
+        language = match.group("lang")
+        code = html.unescape(match.group("code"))
+
+        try:
+            lexer = get_lexer_by_name(language) if language else guess_lexer(code)
+        except Exception:
+            lexer = None
+
+        if lexer is None:
+            return match.group(0)
+
+        formatter = HtmlFormatter(nowrap=True, cssclass="codehilite")
+        highlighted = highlight(code, lexer, formatter)
+        return f'<div class="codehilite"><pre>{highlighted}</pre></div>'
+
+    return CODE_BLOCK_RE.sub(replace, rendered_html)
 
 
 def preview_html(body: str) -> str:
